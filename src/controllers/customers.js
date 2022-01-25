@@ -1,3 +1,5 @@
+const { name } = require('ejs')
+const res = require('express/lib/response')
 const CustomersModel = require('../models/customers')
 const { crypto } = require('../utils/password')
 
@@ -35,18 +37,58 @@ async function add(req, res){
     })
 }
 
-async function listerUsers (req, res) {
+async function list (req, res) {
     // trazendo lista de usuários do banco de dados para a view
     const users = await CustomersModel.find()
 
-    res.render('listUsers', {
+    res.render('list', {
         title: 'Listagem de usuários',
         users, // deixar vazio
     }) // criando rota para a view
 }
+
+async function formEdit(req, res) {
+
+    const { id } = req.query
+
+    const user = await CustomersModel.findById(id) // métod para procurar o id 
+
+    res.render('edit', {
+        title: 'Editar usuário',
+        user,
+    })
+}
+
+async function edit(req, res) {
+    const {
+        name,
+        age,
+        email,
+        
+    }= req.body
+
+    const { id } = req.params
+
+    const user = await CustomersModel.findById(id)
+    
+    user.name = name
+    user.age = age
+    user.email = email
+    
+    user.save()
+    
+    res.render('edit', {
+        title: 'Editar Usuário',
+        user,
+        message: 'Usuário alterado com sucesso!'
+    })
+}
+
 module.exports = {
 
     index,
     add,
-    listerUsers,
+    list,
+    formEdit,
+    edit,
 }
