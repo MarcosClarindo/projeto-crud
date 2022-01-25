@@ -1,6 +1,7 @@
-const CustomersController = require('../models/customers')
+const CustomersModel = require('../models/customers')
+const { crypto } = require('../utils/password')
 
-function add(req, res){
+async function add(req, res){
     const {
         name,
         age,
@@ -8,11 +9,13 @@ function add(req, res){
         password,
     } = req.body
 
-    const resgister = new CustomersController({
+    const passwordCrypt = await crypto(password)
+
+    const resgister = new CustomersModel({
         name,
         age,
         email,
-        password,
+        password: passwordCrypt,
     })
 
     resgister.save()
