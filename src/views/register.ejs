@@ -4,6 +4,13 @@
 <body>
     <h1><%= title %> </h1>
 
+    <%- include ('partials/navbar.ejs') %>
+    
+    <!-- renderizando a mensagem na página do formulário -->
+    <% if (typeof message !== 'undefined'){ %>
+        <%= message %>
+   <% } %> 
+
     <form action="/register/add" method="post">
         <div>
             <label>Nome</label>
@@ -19,11 +26,12 @@
         </div>
         <div>
             <label>Senha</label>
-            <input type="text" name="password" placeholder="Digite a sua senha">
+            <input type="password" name="password" placeholder="Digite a sua senha">
         </div>
         <button type="submit">Cadastrar</button>
     </form>
 
-    <% include ('partials/foot.ejs') %> 
+     
+    <%- include ('partials/foot.ejs') %> 
 </body>
 </html>
